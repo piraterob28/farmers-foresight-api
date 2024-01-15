@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7a29be91-4aae-4f4b-ae37-d49a1525d698" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dal/schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dal/schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/graphql_app/models/zones.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/graphql_app/models/zones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/graphql_app/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/graphql_app/query.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/graphql_app/resolvers/zones.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/graphql_app/resolvers/zones.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/graphql_app/schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/graphql_app/schema.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

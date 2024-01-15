@@ -10,6 +10,7 @@ class Zone(Base):
 
     id = Column(Integer, primary_key=True)
     farm_id = Column(Integer)
+    farm_zone_number = Column(Integer)
     zone_name = Column(String(255))
     length = Column(Float)
     width = Column(Float)

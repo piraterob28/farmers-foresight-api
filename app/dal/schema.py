@@ -88,10 +88,27 @@ class FertilizerLot(Base):
     active = Column(Boolean)
 
 
+class Harvest(Base):
+    __tablename__ = 'harvests'
+
+    id = Column(Integer, primary_key=True)
+    row_batch_id = Column(Integer)
+    harvest_date_planned = Column(DateTime)
+    quantity = Column(Float)
+    quantity_lost = Column(Float)
+    quantity_type = Column(String)
+    notes = Column(String)
+    inserted_at = Column(DateTime)
+    updated_at = Column(DateTime)
+    active = Column(Boolean)
+    completed = Column(Boolean)
+
+
 class RowBatch(Base):
     __tablename__ = 'row_batches'
 
     id = Column(Integer, primary_key=True)
+    row_id = Column(Integer)
     seedling_batch_ids = Column(ARRAY(Integer))
     fertilizer_batch_ids = Column(ARRAY(Integer))
     plant_date = Column(DateTime)
@@ -112,6 +129,7 @@ class Row(Base):
     inserted_at = Column(DateTime)
     updated_at = Column(DateTime)
     active = Column(Boolean)
+    is_planted = Column(Boolean)
 
 
 class Tool(Base):
@@ -155,5 +173,5 @@ class Zone(Base):
     indoor = Column(Boolean)
     covered= Column(Boolean)
     inserted_at = Column(DateTime)
-    update_at = Column(DateTime)
+    updated_at = Column(DateTime)
     active = Column(Boolean)

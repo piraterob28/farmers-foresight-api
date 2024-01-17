@@ -26,7 +26,7 @@ class ZoneData:
     inserted_at: str
     updated_at: str
     active: bool
-    # zone_icons: Optional[ZoneIconNumbers]
+    zone_icons: Optional[ZoneIconNumbers]
 
 
 @strawberry.input

@@ -66,8 +66,9 @@ def get_zones_quick_view() -> List[ZoneData]:
 
                 empty_row_number = sess.query(Row)\
                     .join(Zone, Row.zone_id == Zone.id)\
-                    .join(Farm, Zone.farm_id == farm_id)\
+                    .where(Zone.farm_id == farm_id)\
                     .where(Row.is_planted.is_(False))\
+                    .where(Zone.id == zone.id)\
                     .count()
 
                 zone.zone_icons = ZoneIconNumbers(

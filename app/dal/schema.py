@@ -1,8 +1,23 @@
-from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, ARRAY, Numeric
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, ARRAY, Numeric, ForeignKey
+from sqlalchemy.orm import declarative_base, relationship
 
 # declarative base class
 Base = declarative_base()
+
+
+
+
+class ChoreType(Base):
+    __tablename__ = 'chore_types'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    tool_ids = Column(Integer)
+    inserted_at = Column(DateTime)
+    updated_at = Column(DateTime)
+    active = Column(Boolean)
+    chore_type = Column(String)
 
 
 class Chore(Base):
@@ -18,20 +33,8 @@ class Chore(Base):
     inserted_at = Column(DateTime)
     updated_at = Column(DateTime)
     active = Column(Boolean)
-    chore_type_id = Column(Integer)
-    chore_types = relationship('ChoreType', lazy='joined')
-
-    class ChoreType(Base):
-        __tablename__ = 'chore_types'
-
-        id = Column(Integer, primary_key=True)
-        name = Column(String)
-        description = Column(String)
-        tool_ids = Column(Integer)
-        inserted_at = Column(DateTime)
-        updated_at = Column(DateTime)
-        active = Column(Boolean)
-        chore_type = Column(String)
+    chore_type_id = Column(Integer, ForeignKey(ChoreType.id))
+    chore_type = relationship('ChoreType', lazy='joined')
 
 
 class DailyChoreList(Base):

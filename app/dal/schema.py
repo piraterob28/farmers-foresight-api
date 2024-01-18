@@ -20,6 +20,7 @@ class ChoreType(Base):
     chore_type = Column(String)
 
 
+
 class Chore(Base):
     __tablename__ = 'chores'
 

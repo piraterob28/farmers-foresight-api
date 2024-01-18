@@ -12,7 +12,9 @@ class ChoreType:
     updated_at: str
     active: bool
     chore_type: str
-    average_chore_time: int
+
+    #derived
+    average_chore_time: Optional[str]
 
 
 @strawberry.type

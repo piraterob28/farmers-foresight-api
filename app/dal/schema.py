@@ -10,17 +10,28 @@ class Chore(Base):
 
     id = Column(Integer, primary_key=True)
     row_batch_id = Column(Integer)
-    name = Column(String)
-    description = Column(String)
-    assigned_to = Column(ARRAY(Integer))
+    assigned_to = Column(Integer)
     recurring = Column(Boolean)
     recurr_type = Column(String)
     recurr_week_days = Column(String)
     start_date = Column(DateTime)
-    tool_ids = Column(Integer)
     inserted_at = Column(DateTime)
     updated_at = Column(DateTime)
     active = Column(Boolean)
+    chore_type_id = Column(Integer)
+    chore_types = relationship('ChoreType', lazy='joined')
+
+    class ChoreType(Base):
+        __tablename__ = 'chore_types'
+
+        id = Column(Integer, primary_key=True)
+        name = Column(String)
+        description = Column(String)
+        tool_ids = Column(Integer)
+        inserted_at = Column(DateTime)
+        updated_at = Column(DateTime)
+        active = Column(Boolean)
+        chore_type = Column(String)
 
 
 class DailyChoreList(Base):

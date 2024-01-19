@@ -6,17 +6,17 @@ from typing import List
 from app.graphql_app.context import engine
 from sqlalchemy.orm import Session, aliased
 from app.dal.schema import Chore, DailyChoreList, Row, RowBatch, Zone
-from app.graphql_app.models.chores import ChoreData, ChoreType
+from app.graphql_app.models.chores import ChoreData, ChoreType, DailyChore
 
 
-def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[ChoreData]:
+def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChore]:
 
     if chore_catagory == 'late chores':
 
         with engine.connect() as conn:
             with Session(engine) as sess:
-                chores = sess.query(Chore)\
-                    .join(DailyChoreList, DailyChoreList.chore_id == Chore.id)\
+                chores = sess.query(DailyChoreList)\
+                    .join(Chore, DailyChoreList.chore_id == Chore.id)\
                     .join(RowBatch, Chore.row_batch_id == RowBatch.id)\
                     .join(Row, RowBatch.row_id == Row.id)\
                     .join(Zone, Row.zone_id == Zone.id)\
@@ -27,30 +27,30 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[ChoreData
 
                 for chore in chores:
                     average_chore_time = sess.query(func.avg(DailyChoreList.time_end - DailyChoreList.time_start))\
-                        .join(Chore, DailyChoreList.chore_id == chore.id)\
-                        .where(Chore.chore_type_id == chore.chore_type_id)\
+                        .join(Chore, DailyChoreList.chore_id == Chore.id)\
+                        .where(Chore.chore_type_id == chore.chore_data.chore_type_id)\
                         .group_by(Chore.chore_type_id)\
-                        .one()
+                        .one_or_none()
 
-                    chore.chore_type.average_chore_time = average_chore_time[0] if average_chore_time else None
+                    chore.chore_data.chore_type.average_chore_time = average_chore_time[0] if average_chore_time else None
 
                     (zone_number, row_number) = sess.query(Zone.farm_zone_number, Row.row_number)\
                                                     .join(Row, Row.zone_id == Zone.id)\
                                                     .join(RowBatch, RowBatch.row_id == Row.id)\
                                                     .join(Chore, Chore.row_batch_id == RowBatch.id)\
-                                                    .where(Chore.id == chore.id)\
-                                                    .one()\
+                                                    .where(Chore.id == chore.chore_data.id)\
+                                                    .one_or_none()\
 
-                    chore.zone_number = zone_number if zone_number else None
-                    chore.row_number = row_number if row_number else None
+                    chore.chore_data.zone_number = zone_number if zone_number else None
+                    chore.chore_data.row_number = row_number if row_number else None
 
         return chores
 
     if chore_catagory == 'day chores':
         with engine.connect() as conn:
             with Session(engine) as sess:
-                chores = sess.query(Chore) \
-                    .join(DailyChoreList, DailyChoreList.chore_id == Chore.id) \
+                chores = sess.query(DailyChoreList) \
+                    .join(Chore, DailyChoreList.chore_id == Chore.id) \
                     .join(RowBatch, Chore.row_batch_id == RowBatch.id) \
                     .join(Row, RowBatch.row_id == Row.id) \
                     .join(Zone, Row.zone_id == Zone.id) \
@@ -61,22 +61,23 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[ChoreData
 
                 for chore in chores:
                     average_chore_time = sess.query(func.avg(DailyChoreList.time_end - DailyChoreList.time_start)) \
-                        .join(Chore, DailyChoreList.chore_id == chore.id) \
-                        .where(Chore.chore_type_id == chore.chore_type_id) \
+                        .join(Chore, DailyChoreList.chore_id == Chore.id) \
+                        .where(Chore.chore_type_id == chore.chore_data.chore_type_id) \
                         .group_by(Chore.chore_type_id) \
-                        .one()
+                        .one_or_none()
 
-                    chore.chore_type.average_chore_time = average_chore_time[0] if average_chore_time else None
+                    chore.chore_data.chore_type.average_chore_time = average_chore_time[0] if average_chore_time else None
 
                     (zone_number, row_number) = sess.query(Zone.farm_zone_number, Row.row_number) \
                         .join(Row, Row.zone_id == Zone.id) \
                         .join(RowBatch, RowBatch.row_id == Row.id) \
                         .join(Chore, Chore.row_batch_id == RowBatch.id) \
-                        .where(Chore.id == chore.id) \
-                        .one() \
+                        .where(Chore.id == chore.chore_data.id) \
+                        .one_or_none()
 
-                    chore.zone_number = zone_number if zone_number else None
-                    chore.row_number = row_number if row_number else None
+
+                    chore.chore_data.zone_number = zone_number if zone_number else None
+                    chore.chore_data.row_number = row_number if row_number else None
 
         return chores
 

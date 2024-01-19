@@ -38,11 +38,12 @@ class Chore(Base):
     chore_type = relationship('ChoreType', lazy='joined')
 
 
+
 class DailyChoreList(Base):
     __tablename__ = 'daily_chore_lists'
 
     id = Column(Integer, primary_key=True)
-    chore_id = Column(Integer)
+    chore_id = Column(Integer,  ForeignKey(Chore.id))
     chore_batch_id = Column(Integer)
     todo_date = Column(DateTime)
     completed = Column(Boolean)
@@ -54,7 +55,7 @@ class DailyChoreList(Base):
     inserted_at = Column(DateTime)
     updated_at = Column(DateTime)
     active = Column(Boolean)
-
+    chore_data = relationship('Chore', lazy='joined')
 
 class Farm(Base):
     __tablename__ = 'farms'

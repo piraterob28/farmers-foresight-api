@@ -36,3 +36,19 @@ class ChoreData:
     row_plant_info: str
 
 
+@strawberry.type
+class DailyChore:
+    id: int
+    chore_id: int
+    chore_batch_id: int
+    todo_date: str
+    completed: bool
+    completed_by: Optional[List[int]]
+    record_time: bool
+    time_start: Optional[str]
+    time_end: Optional[str]
+    notes: Optional[str]
+    inserted_at: str
+    updated_at: str
+    active: bool
+    chore_data: ChoreData

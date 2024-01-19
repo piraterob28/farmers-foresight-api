@@ -34,7 +34,18 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[ChoreData
 
                     chore.chore_type.average_chore_time = average_chore_time[0] if average_chore_time else None
 
+                    (zone_number, row_number) = sess.query(Zone.farm_zone_number, Row.row_number)\
+                                                    .join(Row, Row.zone_id == Zone.id)\
+                                                    .join(RowBatch, RowBatch.row_id == Row.id)\
+                                                    .join(Chore, Chore.row_batch_id == RowBatch.id)\
+                                                    .where(Chore.id == chore.id)\
+                                                    .one()\
+
+                    chore.zone_number = zone_number if zone_number else None
+                    chore.row_number = row_number if row_number else None
+
         return chores
+
     if chore_catagory == 'day chores':
         with engine.connect() as conn:
             with Session(engine) as sess:
@@ -56,6 +67,16 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[ChoreData
                         .one()
 
                     chore.chore_type.average_chore_time = average_chore_time[0] if average_chore_time else None
+
+                    (zone_number, row_number) = sess.query(Zone.farm_zone_number, Row.row_number) \
+                        .join(Row, Row.zone_id == Zone.id) \
+                        .join(RowBatch, RowBatch.row_id == Row.id) \
+                        .join(Chore, Chore.row_batch_id == RowBatch.id) \
+                        .where(Chore.id == chore.id) \
+                        .one() \
+
+                    chore.zone_number = zone_number if zone_number else None
+                    chore.row_number = row_number if row_number else None
 
         return chores
 

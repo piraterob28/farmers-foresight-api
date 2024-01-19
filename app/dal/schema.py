@@ -137,6 +137,7 @@ class Row(Base):
 
     id = Column(Integer, primary_key=True)
     zone_id = Column(Integer)
+    row_number = Column(Integer)
     length = Column(Float)
     width = Column(Float)
     walkway = Column(Boolean)

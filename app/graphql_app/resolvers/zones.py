@@ -29,7 +29,7 @@ def get_zones_quick_view() -> List[ZoneData]:
                     .where(Zone.id == zone.id)\
                     .where(User.id == user_id)\
                     .where(DailyChoreList.todo_date >= datetime.datetime.now())\
-                    .where(DailyChoreList.completed is not True)\
+                    .where(DailyChoreList.completed.is_(False))\
                     .count()
 
                 late_chore_number = sess.query(DailyChoreList) \
@@ -40,7 +40,7 @@ def get_zones_quick_view() -> List[ZoneData]:
                     .join(Zone, Row.zone_id == Zone.id) \
                     .where(Zone.id == zone.id) \
                     .where(User.id == user_id) \
-                    .where(DailyChoreList.completed is not True) \
+                    .where(DailyChoreList.completed.is_(False)) \
                     .where(DailyChoreList.todo_date <= datetime.datetime.now()) \
                     .count()
 
@@ -50,7 +50,7 @@ def get_zones_quick_view() -> List[ZoneData]:
                     .join(Zone, Row.zone_id == Zone.id) \
                     .where(Zone.id == zone.id) \
                     .where(User.id == user_id) \
-                    .where(Harvest.completed is not True) \
+                    .where(Harvest.completed.is_(False)) \
                     .where(Harvest.harvest_date_planned <= datetime.datetime.now()) \
                     .count()
 
@@ -60,7 +60,7 @@ def get_zones_quick_view() -> List[ZoneData]:
                     .join(Zone, Row.zone_id == Zone.id) \
                     .where(Zone.id == zone.id) \
                     .where(User.id == user_id) \
-                    .where(Harvest.completed.isnot(True)) \
+                    .where(Harvest.completed.is_(False)) \
                     .where(Harvest.harvest_date_planned >= datetime.datetime.now()) \
                     .count()
 

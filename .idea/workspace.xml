@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7a29be91-4aae-4f4b-ae37-d49a1525d698" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dal/schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dal/schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/graphql_app/models/chores.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/graphql_app/models/chores.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/graphql_app/mutation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/graphql_app/mutation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/graphql_app/resolvers/chores.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/graphql_app/resolvers/chores.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,11 +90,6 @@
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/graphql_app/query.py</url>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/graphql_app/mutation.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

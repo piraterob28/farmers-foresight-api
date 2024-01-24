@@ -88,3 +88,18 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChor
     if chore_catagory == 'day harvest':
         print("day harvest")
         return zone_id
+
+
+def start_record_task_time(daily_chore_id: int) -> str:
+    with Session(engine) as sess:
+        sess.query(DailyChoreList)\
+            .where(DailyChoreList.id == daily_chore_id)\
+            .update({'time_start': datetime.datetime.now()})
+
+        sess.commit()
+
+        updated_daily_chore = sess.query(DailyChoreList.time_start)\
+            .where(DailyChoreList.id == daily_chore_id)\
+            .one()
+
+        return updated_daily_chore[0]

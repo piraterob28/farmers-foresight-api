@@ -29,11 +29,12 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChor
                     average_chore_time = sess.query(func.avg(DailyChoreList.time_end - DailyChoreList.time_start))\
                         .join(Chore, DailyChoreList.chore_id == Chore.id)\
                         .where(Chore.chore_type_id == chore.chore_data.chore_type_id)\
+                        .where(DailyChoreList.record_time.is_(True))\
                         .group_by(Chore.chore_type_id)\
                         .one_or_none()
 
-
-                    chore.chore_data.chore_type.average_chore_time = average_chore_time[0] if average_chore_time[0] else None
+                    average_chore_time_string = str(average_chore_time[0]).split(".")[0] if average_chore_time else None
+                    chore.chore_data.chore_type.average_chore_time = average_chore_time_string
 
                     (zone_number, row_number) = sess.query(Zone.farm_zone_number, Row.row_number)\
                                                     .join(Row, Row.zone_id == Zone.id)\
@@ -64,10 +65,12 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChor
                     average_chore_time = sess.query(func.avg(DailyChoreList.time_end - DailyChoreList.time_start)) \
                         .join(Chore, DailyChoreList.chore_id == Chore.id) \
                         .where(Chore.chore_type_id == chore.chore_data.chore_type_id) \
+                        .where(DailyChoreList.record_time.is_(True)) \
                         .group_by(Chore.chore_type_id) \
                         .one_or_none()
 
-                    chore.chore_data.chore_type.average_chore_time = average_chore_time[0] if average_chore_time else None
+                    average_chore_time_string = str(average_chore_time[0]).split(".")[0] if average_chore_time else None
+                    chore.chore_data.chore_type.average_chore_time = average_chore_time_string
 
                     (zone_number, row_number) = sess.query(Zone.farm_zone_number, Row.row_number) \
                         .join(Row, Row.zone_id == Zone.id) \
@@ -115,6 +118,21 @@ def end_record_task_time(daily_chore_id: int) -> str:
         sess.commit()
 
         updated_daily_chore = sess.query(DailyChoreList.time_end)\
+            .where(DailyChoreList.id == daily_chore_id)\
+            .one()
+
+        return updated_daily_chore[0]
+
+
+def set_record_time(daily_chore_id: int, record_time: bool) -> bool:
+    with Session(engine) as sess:
+        sess.query(DailyChoreList)\
+            .where(DailyChoreList.id == daily_chore_id)\
+            .update({'record_time': record_time})
+
+        sess.commit()
+
+        updated_daily_chore = sess.query(DailyChoreList.record_time)\
             .where(DailyChoreList.id == daily_chore_id)\
             .one()
 

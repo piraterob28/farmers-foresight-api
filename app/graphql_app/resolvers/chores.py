@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import text
+from sqlalchemy import text, null
 from sqlalchemy.sql import func
 from typing import List
 from app.graphql_app.context import engine
@@ -137,3 +137,14 @@ def set_record_time(daily_chore_id: int, record_time: bool) -> bool:
             .one()
 
         return updated_daily_chore[0]
+
+
+def dismiss_record_time(daily_chore_id: int) -> None:
+    with Session(engine) as sess:
+        sess.query(DailyChoreList)\
+            .where(DailyChoreList.id == daily_chore_id)\
+            .update({'record_time': False, 'time_start': null(), 'time_end': null()})
+
+        sess.commit()
+
+        return None

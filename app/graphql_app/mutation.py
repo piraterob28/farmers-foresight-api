@@ -13,3 +13,4 @@ class Mutation:
         start_record_task_time = strawberry.field(resolver=chores.start_record_task_time)
         end_record_task_time = strawberry.field(resolver=chores.end_record_task_time)
         set_record_time = strawberry.field(resolver=chores.set_record_time)
+        dismiss_record_time = strawberry.field(resolver=chores.dismiss_record_time)

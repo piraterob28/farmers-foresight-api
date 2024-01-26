@@ -30,6 +30,7 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChor
                         .join(Chore, DailyChoreList.chore_id == Chore.id)\
                         .where(Chore.chore_type_id == chore.chore_data.chore_type_id)\
                         .where(DailyChoreList.record_time.is_(True))\
+                        .where(DailyChoreList.completed.is_((True)))\
                         .group_by(Chore.chore_type_id)\
                         .one_or_none()
 
@@ -66,6 +67,7 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChor
                         .join(Chore, DailyChoreList.chore_id == Chore.id) \
                         .where(Chore.chore_type_id == chore.chore_data.chore_type_id) \
                         .where(DailyChoreList.record_time.is_(True)) \
+                        .where(DailyChoreList.completed.is_((True))) \
                         .group_by(Chore.chore_type_id) \
                         .one_or_none()
 
@@ -148,3 +150,18 @@ def dismiss_record_time(daily_chore_id: int) -> None:
         sess.commit()
 
         return None
+
+
+def complete_task(daily_chore_id: int, notes: str | None = None) -> bool:
+    with Session(engine) as sess:
+        sess.query(DailyChoreList)\
+            .where(DailyChoreList.id == daily_chore_id)\
+            .update({'completed': True, 'notes': notes})
+
+        sess.commit()
+
+        updated_daily_chore = sess.query(DailyChoreList.completed) \
+            .where(DailyChoreList.id == daily_chore_id) \
+            .one()
+
+        return updated_daily_chore[0]

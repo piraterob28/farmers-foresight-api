@@ -1,13 +1,14 @@
 from typing import Optional, List
 import strawberry
-
+from app.graphql_app.models.tools import Tool
 
 @strawberry.type
 class ChoreType:
     id: int
     name: str
     description: str
-    tool_ids: Optional[List[str]]
+    tool_ids: Optional[List[int]]
+    tools: Optional[List[Tool]]
     inserted_at: str
     updated_at: str
     active: bool

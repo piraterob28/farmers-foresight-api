@@ -5,7 +5,7 @@ from sqlalchemy.sql import func
 from typing import List
 from app.graphql_app.context import engine
 from sqlalchemy.orm import Session, aliased
-from app.dal.schema import Chore, DailyChoreList, Row, RowBatch, Zone
+from app.dal.schema import Chore, DailyChoreList, Row, RowBatch, Tool, Zone
 from app.graphql_app.models.chores import ChoreData, ChoreType, DailyChore
 
 
@@ -47,6 +47,12 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChor
                     chore.chore_data.zone_number = zone_number if zone_number else None
                     chore.chore_data.row_number = row_number if row_number else None
 
+                    if len(chore.chore_data.chore_type.tool_ids) > 0:
+                        tools = sess.query(Tool)\
+                            .where(Tool.id.in_(chore.chore_data.chore_type.tool_ids))\
+                            .all()
+
+                        chore.chore_data.chore_type.tools = tools if tools else None
         return chores
 
     if chore_catagory == 'day chores':
@@ -84,6 +90,13 @@ def get_chore_list_one_zone(chore_catagory: str, zone_id: int) -> List[DailyChor
 
                     chore.chore_data.zone_number = zone_number if zone_number else None
                     chore.chore_data.row_number = row_number if row_number else None
+
+                    if len(chore.chore_data.chore_type.tool_ids) > 0:
+                        tools = sess.query(Tool)\
+                            .where(Tool.id.in_(chore.chore_data.chore_type.tool_ids))\
+                            .all()
+
+                        chore.chore_data.chore_type.tools = tools if tools else None
 
         return chores
 
